@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chaoxu.mapper.SalesFileMapper">
+
+    <cache/>
+
+    <insert id="save">
+        INSERT INTO t_sales_file( name, filename, contenttype, `size`, salesid)
+        VALUES (#{name},#{filename},#{contenttype},#{size},#{salesid})
+    </insert>
+
+    <delete id="delFile">
+        DELETE FROM t_sales_file WHERE salesid = #{salesid}
+    </delete>
+
+    <select id="findAll" resultType="SalesFile">
+        SELECT * FROM t_sales_file
+    </select>
+
+    <select id="findSaleFileBySaleId" resultType="com.chaoxu.pojo.SalesFile">
+        SELECT * FROM t_sales_file WHERE salesid = #{salesid} order by id desc
+    </select>
+
+    <select id="findById" resultType="com.chaoxu.pojo.SalesFile">
+        SELECT * FROM t_sales_file WHERE  id =#{id}
+    </select>
+</mapper>

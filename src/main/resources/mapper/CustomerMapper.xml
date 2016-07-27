@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chaoxu.mapper.CustomerMapper">
+
+    <cache/>
+    <insert id="saveCustomer">
+        INSERT INTO t_customer(name, tel, weixin, address, email, userid, pinyin, companyid, companyname, level, type) VALUES (#{name},#{tel},#{weixin},#{address},#{email},#{userid},#{pingyin},#{companyid},#{companyname},#{level},#{type})
+    </insert>
+
+    <update id="updateCustomer">
+        UPDATE t_customer SET name=#{name},tel=#{tel},weixin=#{weixin},address=#{address},email=#{email},userid=#{userid},pinyin=#{pingyin},companyid=#{companyid},companyname=#{companyname},level=#{level} where id = #{id}
+    </update>
+
+    <delete id="delCustomer">
+        DELETE FROM t_customer WHERE id =#{id}
+    </delete>
+
+
+    <select id="findByType" resultType="com.chaoxu.pojo.Customer">
+        SELECT * FROM t_customer WHERE type = #{type}
+    </select>
+
+    <select id="findByparam" resultType="com.chaoxu.pojo.Customer">
+        SELECT * FROM t_customer
+        <where>
+            <if test="userid != null and userid != ''">
+                userid = #{userid} or (userid ='' or userid is null)
+            </if>
+            <if test="keyword !=null and keyword != ''">
+                and ( name LIKE concat('%',#{keyword},'%') or pinyin LIKE concat('%',#{keyword},'%') or tel LIKE
+                concat('%',#{keyword},'%'))
+            </if>
+        </where>
+        order by id desc
+        limit ${start},${length}
+    </select>
+
+    <select id="Count" resultType="java.lang.Long">
+        SELECT  count(*) FROM t_customer
+    </select>
+
+    <select id="FilterCount" resultType="java.lang.Long">
+        SELECT count(*) FROM t_customer
+
+        <where>
+            <if test="userid !=null and userid != ''">
+                userid = #{userid} or (userid !='' or userid is null);
+            </if>
+            <if test="keyword !=null and keyword != ''">
+                AND ( name LIKE concat('%',#{keyword},'%') or pinyin LIKE concat('%',#{keyword},'%') or tel LIKE
+                concat('%',#{keyword},'%'))
+            </if>
+        </where>
+
+    </select>
+    <select id="findbyId" resultType="com.chaoxu.pojo.Customer">
+        SELECT * FROM t_customer WHERE id=#{id}
+    </select>
+
+    <select id="findByCompanyId" resultType="com.chaoxu.pojo.Customer">
+        select * FROM t_customer WHERE companyid =#{id}
+    </select>
+    <select id="findAll" resultType="com.chaoxu.pojo.Customer">
+        SELECT * FROM t_customer
+    </select>
+
+    <select id="findnewCustomerCount" resultType="java.lang.Long">
+        SELECT count(*)FROM t_customer WHERE DATE (createtime)>=#{start} and date(createtime)&lt;=#{end}
+    </select>
+
+
+</mapper>

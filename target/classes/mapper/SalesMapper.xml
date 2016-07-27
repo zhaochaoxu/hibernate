@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chaoxu.mapper.SalesMapper">
+
+    <cache/>
+    <!--自动返回主键-->
+    <insert id="saveSales" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO t_sales(name, price, custid, custname, progress, lasttime, userid, username, successtime) VALUES (#{name},#{price},#{custid},#{custname},#{progress},#{lasttime},#{userid},#{username},#{successtime})
+    </insert>
+
+    <update id="updateSales">
+        UPDATE t_sales SET name=#{name},price=#{price},custid =#{custid},custname=#{custname},progress=#{progress},lasttime=#{lasttime},userid=#{userid},username=#{username},successtime=#{successtime} where id=#{id}
+    </update>
+
+    <delete id="delSaleById">
+        DELETE FROM t_sales WHERE id =#{id}
+    </delete>
+
+    <select id="findByParam" resultType="com.chaoxu.pojo.Sales">
+        SELECT * FROM t_sales
+        <where>
+            <if test="userid != null and userid != ''">
+                userid =#{userid}
+            </if>
+            <if test="name != null and name != ''">
+                and name LIKE concat('%',#{name},'%')
+            </if>
+            <if test="progress != null and progress != ''">
+                and progress=#{progress}
+            </if>
+            <if test="startDate != null and startDate != ''">
+                and startDate>=#{startDate}
+            </if>
+            <if test="endDate != null and endDate != ''">
+                and endDate &lt;=#{endDate}
+            </if>
+        </where>
+        order by id desc
+        limit ${start},${length}
+    </select>
+
+    <select id="Count" resultType="java.lang.Long">
+        SELECT count(*) FROM t_sales
+    </select>
+
+    <select id="filterCount" resultType="java.lang.Long">
+        SELECT count(*) FROM t_sales
+        <where>
+            <if test="userid != null and userid != ''">
+                userid =#{userid}
+            </if>
+            <if test="name != null and name != ''">
+                and name LIKE concat('%',#{name},'%')
+            </if>
+            <if test="progress != null and progress != ''">
+                and progress=#{progress}
+            </if>
+            <if test="startDate != null and startDate != ''">
+                and startDate>=#{startDate}
+            </if>
+            <if test="endDate != null and endDate != ''">
+                and endDate &lt;=#{endDate}
+            </if>
+        </where>
+    </select>
+
+    <select id="findAll" resultType="com.chaoxu.pojo.Sales">
+        SELECT * FROM t_sales
+    </select>
+
+    <select id="findById" resultType="com.chaoxu.pojo.Sales">
+        SELECT * FROM t_sales WHERE id =#{id}
+    </select>
+
+    <select id="findSaleCount" resultType="java.lang.Long">
+        SELECT COUNT(*) FROM t_sales WHERE DATE (createtime)>=#{start} and date(createtime)&lt;=#{end} and progress=#{progress}
+    </select>
+
+    <select id="findSaleMoney" resultType="java.lang.Float">
+        SELECT sum(price) FROM t_sales WHERE DATE (createtime)>=#{start} and date (createtime)&lt;=#{end} and progress =#{progress}
+    </select>
+
+    <select id="countProgress" resultType="java.util.Map">
+         SELECT temp.custtype as 'name',
+          (SELECT COUNT(*) FROM t_sales WHERE t_sales.progress = temp.custtype and date(createtime) >= #{start}
+          and date(createtime) &lt;= #{end}) AS 'value'
+        FROM (SELECT '初次接触' AS 'custtype'
+              UNION SELECT '确认意向'
+              UNION SELECT '提供合同'
+              UNION SELECT '交易完成'
+              UNION SELECT '合同搁置') AS temp
+
+    </select>
+
+    <select id="totalUserMoney" resultType="java.util.Map">
+     SELECT user.realname,
+     (SELECT NULLIF(sum(price),0) FROM t_sales WHERE userid=user.id and DATE(createtime)>=#{start} and date(createtime)&lt;=#{end}) as price
+     from( SELECT id,realname FROM t_user) as user
+
+    </select>
+
+
+</mapper>
