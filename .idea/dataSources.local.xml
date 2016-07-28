@@ -7,5 +7,11 @@
       <schema-pattern>learn.*</schema-pattern>
       <default-schemas>learn.*</default-schemas>
     </data-source>
+    <data-source name="MySQL - mydb@localhost" uuid="8d232c70-5046-4c7d-8115-84446e40cb69">
+      <secret-storage>master_key</secret-storage>
+      <user-name>root</user-name>
+      <schema-pattern>mydb.*</schema-pattern>
+      <default-schemas>mydb.*</default-schemas>
+    </data-source>
   </component>
 </project>

@@ -49,7 +49,21 @@ public class HibernateTestCase {
         Transaction transaction = session.beginTransaction();
 
         Student stu = (Student) session.get(Student.class,2);
-        System.out.println(stu.getUsername());
+
+        session.clear();
+
+        stu.setUsername("赵玉静");
+
+        session.update(stu);
+
+        session.flush();
+
+        System.out.println("=====================");
+        System.out.println("=====================");
+        System.out.println("=====================");
+        System.out.println("=====================");
+        System.out.println("=====================");
+        System.out.println("=====================");
         transaction.commit();
     }
 

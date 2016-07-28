@@ -1,0 +1,30 @@
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.chaoxu.pojo">
+
+    <!--
+    最佳实践
+    1.一对多时，先存一后存多
+    2.让其中一端放弃关联维护，让一放弃维护。留多 invers = "true"
+    3. 当配置 fetch = "join" 时 解决 n+1 问题
+
+    -->
+
+    <class name="Dept" table="t_dept">
+
+        <id name="id">
+            <generator class="native"/>
+        </id>
+
+        <property name="deptname"/>
+        <!--cascade = "delete" 级联删除-->
+        <set name="employeeSet" inverse="true" cascade="delete" fetch="join">
+            <key column="deptid"/>
+
+            <one-to-many class="Employee" />
+        </set>
+
+    </class>
+
+</hibernate-mapping>

@@ -3,53 +3,30 @@ package com.chaoxu.pojo;
 import java.io.Serializable;
 
 /**
- * Created by dell on 2016/7/18.
+ * Created by dell on 2016/7/28.
  */
 public class Task implements Serializable {
 
-    private Integer id;
-    private Integer custid;
-    private Integer salesid;
-    private Integer userid;
+    private String  id;
     private String title;
-    private String start;
-    private String end;
-    private String color;
-    private String remindertime;
-    private Boolean done;
+    private Integer version;
 
 
-    public Integer getId() {
+    public Task() {
+    }
+
+    public Task(String title) {
+        this.title = title;
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public Integer getCustid() {
-        return custid;
-    }
-
-    public void setCustid(Integer custid) {
-        this.custid = custid;
-    }
-
-    public Integer getSalesid() {
-        return salesid;
-    }
-
-    public void setSalesid(Integer salesid) {
-        this.salesid = salesid;
-    }
-
-    public Integer getUserid() {
-        return userid;
-    }
-
-    public void setUserid(Integer userid) {
-        this.userid = userid;
-    }
     public String getTitle() {
         return title;
     }
@@ -58,43 +35,11 @@ public class Task implements Serializable {
         this.title = title;
     }
 
-    public String getStart() {
-        return start;
+    public Integer getVersion() {
+        return version;
     }
 
-    public void setStart(String start) {
-        this.start = start;
-    }
-
-    public String getEnd() {
-        return end;
-    }
-
-    public void setEnd(String end) {
-        this.end = end;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-    public String getRemindertime() {
-        return remindertime;
-    }
-
-    public void setRemindertime(String remindertime) {
-        this.remindertime = remindertime;
-    }
-
-    public Boolean getDone() {
-        return done;
-    }
-
-    public void setDone(Boolean done) {
-        this.done = done;
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 }
